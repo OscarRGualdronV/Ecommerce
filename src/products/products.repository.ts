@@ -1,24 +1,43 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { Product } from "./entities/product.entity";
+import { CreateProductDto } from "./dto/create-product.dto";
+import { UpdateProductDto } from "./dto/update-product.dto";
 
 @Injectable()
 export class ProductsRepository {
     private products: Product[] = [];
+    private nextId = 1;
 
-    create(product: Product): Product {
-        this.products.push(product);
-        return product;
-    }
-    
-    findAll(): Product[] {
+    findAll(): Product[]{
         return this.products;
     }
-    
-    findById(id: number): Product | undefined {
-        return this.products.find(product => product.id === id);
+
+    findById(id: number): Product {
+        const product = this.products.find(product => product.id === id);
+        if(!product) throw new NotFoundException(`Producto con id ${id} no encontrado`);
+        return product;
     }
-    
-    clear() {
-        this.products = [];
+
+    create(productData: CreateProductDto): Product{
+        const newProduct: Product = {
+            id: this.nextId++,
+            ...productData,
+        };
+        this.products.push(newProduct);
+        return newProduct;
+    }
+
+    update(id: number, productData: UpdateProductDto): Product{
+        const index = this.products.findIndex(product => product.id === id);
+        if(index === -1) throw new NotFoundException(`Producto con id ${id} no encontrado`);
+        this.products[index] = {...this.products[index], ...productData};
+        return this.products[index];
+    }
+
+    remove(id: number){
+        const index = this.products.findIndex(product => product.id === id);
+        if(index === -1) throw new NotFoundException(`Producto con id ${id} no encontrado`);
+        this.products.splice(index, 1);
+        return {mesagge: `Producto con id ${id} eliminado con exito`}
     }
 }

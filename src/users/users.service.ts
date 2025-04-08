@@ -8,21 +8,23 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(private readonly userRepository: UsersRepository){}
 
-  create(user: User): User {
-    return this.userRepository.createUser(user);
-  }
-
   findAll(): User[] {
-    return this.userRepository.getAllUsers();
+    return this.userRepository.findAll();
   }
 
   findOne(id: number): User | undefined {
     return this.userRepository.findById(id);
   }
 
-  findByEmail(email: string): User | undefined{
-    console.log('Buscando usuario con email:', email);
-    
-    return this.userRepository.findByEmail(email)
+  create(userData: CreateUserDto): User {
+    return this.userRepository.create(userData);
+  }
+
+  update(id: number, userData: UpdateUserDto){
+    return this.userRepository.update(id, userData);
+  }
+
+  remove(id: number){
+    return this.userRepository.remove(id);
   }
 }

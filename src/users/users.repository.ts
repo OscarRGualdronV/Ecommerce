@@ -1,26 +1,47 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { User } from "./entities/user.entity";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersRepository {
     private users: User[] = [];
+    private nextId = 1;
 
-    createUser(user: User): User{
-        this.users.push(user);
-        return user;
-    }
-
-    getAllUsers(): User[]{
+    findAll(): User[]{
         return this.users;
     }
-
-    findByEmail(email: string): User | undefined{
-        return this.users.find(
-        user => user.email.trim().toLowerCase() === email.trim().toLowerCase());
+    
+    findById(id: number): User {
+        const user = this.users.find((user) => user.id === id);
+        if (!user) {
+            throw new NotFoundException(`Usuaruio con id ${id} no encontrado`);
+        }
+        return user;
+    }
+    
+    create(userData: CreateUserDto): User{
+        const newUser: User = {
+            id: this.nextId++,
+            ...userData,
+        };
+        this.users.push(newUser);
+        return newUser
     }
 
-    findById(id: number): User | undefined{
-        return this.users.find((user) => user.id === id)
+    update(id: number, userData: UpdateUserDto): User{
+        const index = this.users.findIndex( user => user.id === id);
+        if(index === -1) throw new NotFoundException(`Usuario con id ${id} no encontrado`);
+        this.users[index] = {...this.users[index], ...userData};
+        return this.users[index];
+    }
+
+    remove(id: number){
+        const index = this.users.findIndex(user => user.id === id);
+        if(index === -1)throw new NotFoundException(`Usuario con id ${id} no encontrado`);
+
+        this.users.splice(index, 1);
+        return {message: `Usuario con id ${id} eliminado con exito`}
     }
 
 }
