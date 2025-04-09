@@ -8,8 +8,8 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(private readonly userRepository: UsersRepository){}
 
-  findAll(): User[] {
-    return this.userRepository.findAll();
+  findAll(page: number, limit: number){
+    return this.userRepository.findAll(page, limit);
   }
 
   findOne(id: number): User | undefined {
@@ -26,5 +26,9 @@ export class UsersService {
 
   remove(id: number){
     return this.userRepository.remove(id);
+  }
+
+  findByEmail(email: string): User | undefined{
+    return this.userRepository.findByEmail(email)
   }
 }

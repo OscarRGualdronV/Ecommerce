@@ -8,8 +8,20 @@ export class UsersRepository {
     private users: User[] = [];
     private nextId = 1;
 
-    findAll(): User[]{
-        return this.users;
+    findAll(page = 1, limit = 5){
+        const starIndex = (page - 1) * limit;
+        const endIndex = starIndex + limit;
+        
+        const paginatedItems = this.users.slice(starIndex, endIndex);
+        const totalItems = this.users.length;
+        const totalPages = Math.ceil(totalItems / limit);
+
+        return {
+            data: paginatedItems.map(({password, ...rest }) => rest),
+            totalItems,
+            totalPages,
+            currentPage: page 
+        }
     }
     
     findById(id: number): User {
@@ -44,4 +56,8 @@ export class UsersRepository {
         return {message: `Usuario con id ${id} eliminado con exito`}
     }
 
+    findByEmail(email: string): User | undefined {
+        console.log('Buscando usuario con email:', email);
+        return this.users.find(user => user.email === email);
+    }
 }

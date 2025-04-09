@@ -8,8 +8,20 @@ export class ProductsRepository {
     private products: Product[] = [];
     private nextId = 1;
 
-    findAll(): Product[]{
-        return this.products;
+    findAll(page = 1, limit = 5){
+        const starIndex = (page - 1) * limit;
+        const endIndex = starIndex + limit;
+
+        const paginatedItems = this.products.slice(starIndex, endIndex);
+        const totalItems = this.products.length;
+        const totalPages = Math.ceil(totalItems / limit);
+
+        return {
+            data : paginatedItems.map(rest => rest),
+            totalItems,
+            totalPages,
+            currentPages: page
+        }
     }
 
     findById(id: number): Product {

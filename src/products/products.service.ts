@@ -8,8 +8,8 @@ import { CreateProductDto } from './dto/create-product.dto';
 export class ProductsService {
   constructor(private readonly productsRepository: ProductsRepository){}
 
-findAll():Product[]{
-  return this.productsRepository.findAll()
+findAll(page: number, limit: number){
+  return this.productsRepository.findAll(page, limit);
 }
 
 findOne(id: number):Product{
