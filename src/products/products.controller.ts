@@ -18,6 +18,11 @@ export class ProductsController {
     return this.productsService.findAll(pageNumber, limitNumber);
   }
 
+  @Get('seeder')
+  async seedProducts(){
+    return this.productsService.preloadProducts();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
@@ -46,4 +51,7 @@ export class ProductsController {
     this.productsService.remove(+id);
     return {id: +id};
   }
+
+
+
 }

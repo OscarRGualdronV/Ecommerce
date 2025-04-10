@@ -17,4 +17,7 @@ export class CreateProductDto {
 
     @IsString()
     imgUrl: string;
+
+    @IsString()
+    categoryId: string;
 }
