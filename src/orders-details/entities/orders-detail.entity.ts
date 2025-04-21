@@ -15,15 +15,10 @@ export class OrdersDetailEntity {
     price: number;
 
 
-    @ManyToOne(() => OrderEntity, order => order.details)
+    @OneToOne(()=>OrderEntity)
     @JoinColumn({name: 'order_id'})
     order: OrderEntity;
 
     @ManyToMany(() => ProductEntity, (product) => product.orderDetails)
-    @JoinTable({
-    name: 'order_details_products',
-    joinColumn: { name: 'order_detail_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'product_id', referencedColumnName: 'id' },
-    })
     products: ProductEntity[];
 }

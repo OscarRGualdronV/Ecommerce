@@ -6,7 +6,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CategoryEntity } from 'src/categories/entities/category.entity';
-import { productsSeed } from 'src/seeder/products.seed';
+import { productsSeed } from 'src/seeder/products/products.mock';
 
 @Injectable()
 export class ProductsService {

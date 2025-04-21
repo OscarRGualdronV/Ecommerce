@@ -1,4 +1,4 @@
-export const categoriesSeed = [
+export const categories = [
     { name: 'smartphone' },
     { name: 'monitor' },
     { name: 'keyboard' },

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from './entities/category.entity';
 import { Repository } from 'typeorm';
-import { categoriesSeed } from 'src/seeder/categories.seed';
+import { categoriesSeed } from 'src/seeder/categories/categories.mock';
 
 
 @Injectable()

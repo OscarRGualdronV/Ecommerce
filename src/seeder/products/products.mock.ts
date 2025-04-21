@@ -1,4 +1,4 @@
-export const productsSeed = [
+export const products = [
     {
         "name": "Iphone 15",
         "description": "The best smartphone in the world",

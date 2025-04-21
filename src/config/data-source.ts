@@ -1,4 +1,5 @@
 import { registerAs } from '@nestjs/config';
+import { subscribe } from 'diagnostics_channel';
 import * as dotenv from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
@@ -13,12 +14,15 @@ const typeOrmConfig = {
     password: process.env.DB_PASSWORD,
     synchronize: true,
     autoLoadEntities: true,
-    logging: true,
+    logging: false,
     Logger: 'advanced-console',
     entities: ['dist/**/*.entity{.ts,.js}'],
-    migrations: ['/dist/migrations/*{.ts,.js}'],
+    migrations: ['dist/migrations/*{.ts,.js}'],
+    subscribers: [],
+    ssl: false,
+    dropShema:false
 };
 
-export default registerAs('typeorm', ()=> typeOrmConfig);
+export default registerAs('postgres', ()=> typeOrmConfig);
 
 export const connectionSource = new DataSource(typeOrmConfig as DataSourceOptions)

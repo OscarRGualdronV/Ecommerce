@@ -16,7 +16,11 @@ export class OrderEntity {
     @ManyToOne(() => UserEntity, user => user.orders)
     user: UserEntity;
 
-    @OneToMany(() => OrdersDetailEntity, details => details.order)
-    details: OrdersDetailEntity[];
+    // Este Bloque se elimino para evitar circularidad con SWC
+    // @OneToOne(    
+    // () => import ('../../orders-details/entities/orders-detail.entity').then(m => m.OrdersDetailEntity),
+    // (orderDetail) => orderDetail.order,
+    // )
+    // detailt: OrdersDetailEntity;
 
 }

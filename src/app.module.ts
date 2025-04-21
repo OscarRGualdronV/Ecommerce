@@ -8,7 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrdersDetailsModule } from './orders-details/orders-details.module';
-import typeormConfig from './config/typeorm.config';
+import typeormConfig from './config/data-source';
+import { SeedsModule } from './seeder/seeds.module';
 
 
 @Module({
@@ -20,9 +21,9 @@ import typeormConfig from './config/typeorm.config';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) =>
-        configService.get('typeorm'),
+        configService.get('postgres'),
     }),
-    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, OrdersDetailsModule
+    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, OrdersDetailsModule, SeedsModule
   ],
   controllers: [],
   providers: [SeederService],
