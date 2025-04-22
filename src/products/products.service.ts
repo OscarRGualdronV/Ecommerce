@@ -70,40 +70,5 @@ async remove(id: string): Promise<{message:string}>{
   return {message: `Producto con id ${id} eliminado con éxito`}
 }
 
-// async preloadProducts() {
-//   const productsInDb = await this.productOrmRepository.find();
-
-//   if (productsInDb.length > 0) {
-//     return {mesagge: 'Productos ya cargados'};
-//   }
-
-//   for (const product of products){
-//     const category = await this.categoryRepository.findOne({
-//       where: {name: product.category},
-//     });
-
-//     if (!category) {
-//       console.log(`Category ${product.category} no encontrada para el producto ${product.name}`);
-//       continue;
-//     }
-
-//     const exist = await this.productOrmRepository.findOne({
-//       where: { name: product.name},
-//     });
-
-//     if (exist) {
-//       console.log(`El producto ${product.name} ya existe en la base de datos`);
-//       continue;
-//     }
-
-//     await this.productOrmRepository.save({
-//       ...product,
-//       category,
-//     });
-//   }
-
-//   return { message: 'Productos cargados correctamente'}
-// }
-
 }
 
