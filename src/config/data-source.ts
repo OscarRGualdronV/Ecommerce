@@ -13,7 +13,7 @@ const typeOrmConfig = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     synchronize: true,
-    autoLoadEntities: true,
+    autoLoadEntities: false,
     logging: false,
     Logger: 'advanced-console',
     entities: ['dist/**/*.entity{.ts,.js}'],

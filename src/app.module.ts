@@ -2,7 +2,6 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { SeederService } from './seeder/seeder.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
@@ -26,7 +25,7 @@ import { SeedsModule } from './seeder/seeds.module';
     UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, OrdersDetailsModule, SeedsModule
   ],
   controllers: [],
-  providers: [SeederService],
+  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

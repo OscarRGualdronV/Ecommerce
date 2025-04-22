@@ -10,6 +10,6 @@ import { OrderEntity } from 'src/orders/entities/order.entity';
   imports:[TypeOrmModule.forFeature([UserEntity, OrderEntity])],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository],
-  exports: [UsersService, UsersRepository]
+  exports: [UsersService]
 })
 export class UsersModule {}

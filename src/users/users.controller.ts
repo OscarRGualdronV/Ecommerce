@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, NotFoundException, Put, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from 'src/auth/authGuard/auth.guard';
 
@@ -11,7 +11,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(
+  async findAll(
     @Query('page') page = '1', 
     @Query('limit') limit = '5' ){
     const pageNumber = Number(page) || 1;
@@ -22,33 +22,36 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string){
-    const user =  this.usersService.findOne(+id);
+  async findOne(@Param('id') id: string){
+    const user =  await this.usersService.findOne(id);
+    if (!user) {
+      return {message: 'Usuario no encontrado'}
+    }
     const {password, ...rest} = user;
-    return rest;
+    return rest
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() userData: CreateUserDto){
-    const newUser = this.usersService.create(userData);
+  async create(@Body() userData: CreateUserDto){
+    const newUser = await this.usersService.create(userData);
     return { id: newUser.id};
   }
 
   @UseGuards(AuthGuard)
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: string, @Body() userData: UpdateUserDto){
-    const updatedUser = this.usersService.update(+id, userData);
+  async update(@Param('id') id: string, @Body() userData: UpdateUserDto){
+    const updatedUser = await this.usersService.update(id, userData);
     return {id: updatedUser.id};
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  remove(@Param('id') id: string){
-    this.usersService.remove(+id)
-    return {id: +id};
+  async remove(@Param('id') id: string){
+    const result = await this.usersService.remove(id);
+    return result;
   }
 
 }

@@ -1,26 +1,30 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsPassportNumber, IsPhoneNumber, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsPassportNumber, IsPhoneNumber, IsString, MinLength, minLength } from "class-validator";
 import { UUID } from "crypto";
 
 export class CreateUserDto {
-    @IsNotEmpty()
+
     @IsString()
     name: string;
     
     @IsEmail()
     email: string;
     
-    @IsNotEmpty()
+    @MinLength(6)
     password: string;
     
-    @IsNotEmpty()
+    @IsOptional()
+    @IsString()
     address: string;
     
+    @IsOptional()
     @IsPhoneNumber(null)
     phone:string;
 
-    @IsOptional()
+    @IsOptional(null)
+    @IsString()
     country?: string;
 
-    @IsOptional()
+    @IsOptional(null)
+    @IsString()
     city?: string;
 }

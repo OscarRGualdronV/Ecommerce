@@ -6,12 +6,11 @@ import { UsersService } from 'src/users/users.service';
 export class AuthService {
 constructor(private readonly userService: UsersService){}
 
-signIn(logindto: LoginDto){
-const user = this.userService.findByEmail(logindto.email);
-if (user && user.password === logindto.password) {
-  return "Login exitoso";
+async signIn(logindto: LoginDto): Promise<string>{
+  const user = await this.userService.findByEmail(logindto.email);
+  if (user && user.password === logindto.password) {
+    return 'Login exitoso';
+  } 
+  throw new UnauthorizedException('Email o password incorrectos. Por favor, intenta de nuevo.')
 }
-return "Email o Password son incorrectos. Porfavor intenta de nuevo";
-}
-
 }

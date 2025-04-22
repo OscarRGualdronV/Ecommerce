@@ -9,49 +9,43 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  findAll(
+  async findAll(
     @Query('page') page = '1',
     @Query('limit') limit = '5'
   ) {
     const pageNumber = Number(page) || 1;
     const limitNumber = Number(limit) || 5;
-    return this.productsService.findAll(pageNumber, limitNumber);
+    return await this.productsService.findAll(pageNumber, limitNumber);
   }
 
-  @Get('seeder')
-  async seedProducts(){
-    return this.productsService.preloadProducts();
-  }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.productsService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() productData: CreateProductDto) {
-    const newProduct = this.productsService.create(productData);
+  async create(@Body() productData: CreateProductDto) {
+    const newProduct = await this.productsService.create(productData);
     return {id: newProduct.id}
   }
 
   @UseGuards(AuthGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  update(@Param('id') id: string, @Body() productData: UpdateProductDto) {
-    const updateProduct = this.productsService.update(+id, productData);
+  async update(@Param('id') id: string, @Body() productData: UpdateProductDto) {
+    const updateProduct = await this.productsService.update(id, productData);
     return {id: updateProduct.id};
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  remove(@Param('id') id: string) {
-    this.productsService.remove(+id);
-    return {id: +id};
+  async remove(@Param('id') id: string) {
+    const result = await this.productsService.remove(id);
+    return result;
   }
-
-
 
 }

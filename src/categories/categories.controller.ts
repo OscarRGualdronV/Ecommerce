@@ -5,10 +5,6 @@ import { CategoriesService } from './categories.service';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-@Get('seeder')
-async seedCategories(){
-  return this.categoriesService.preloadCategories();
-}
 
 @Get()
 async getCategories(){
