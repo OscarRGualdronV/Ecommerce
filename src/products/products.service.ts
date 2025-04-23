@@ -70,5 +70,10 @@ async remove(id: string): Promise<{message:string}>{
   return {message: `Producto con id ${id} eliminado con éxito`}
 }
 
+async updateImageUrl(id: string, url: string): Promise<ProductEntity>{
+  await this.productOrmRepository.update(id, {imgUrl: url});
+  return this.findOne(id);
+}
+
 }
 
