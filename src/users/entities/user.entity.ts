@@ -32,6 +32,6 @@ export class UserEntity {
     @Column({length:20, nullable:true})
     city?: string;
 
-    @OneToMany(() => OrderEntity, order => order.user)
-    orders: OrderEntity[];
+    // @OneToMany(() => OrderEntity, order => order.user)
+    // orders: OrderEntity[];
 }

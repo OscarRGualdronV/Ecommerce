@@ -13,7 +13,8 @@ export class OrderEntity {
     @CreateDateColumn()
     date: Date;
 
-    @ManyToOne(() => UserEntity, user => user.orders)
+    @ManyToOne(() => UserEntity,{onDelete: 'CASCADE',})
+    @JoinColumn({name: 'user_id'})
     user: UserEntity;
 
 }

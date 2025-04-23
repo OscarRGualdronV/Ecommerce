@@ -20,7 +20,7 @@ const typeOrmConfig = {
     migrations: ['dist/migrations/*{.ts,.js}'],
     subscribers: [],
     ssl: false,
-    dropShema:false
+    dropShema:true
 };
 
 export default registerAs('postgres', ()=> typeOrmConfig);

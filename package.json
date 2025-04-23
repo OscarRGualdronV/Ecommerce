@@ -19,12 +19,13 @@
     "test:debug": "pnpm node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand --detectOpenHandles",
     "test:e2e": "pnpm jest --config ./test/jest-e2e.json",
     "start:swc": "pnpm nest start --watch -b swc",
-    "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "migration:run": "pnpm run typeorm -- -d ./src/config/typeorm.config.ts migration:run",
-    "migration:generate": "pnpm run typeorm -- -d ./src/config/typeorm.config.ts migration:generate",
-    "migration:create": "pnpm run typeorm migration:create",
-    "migration:revert": "pnpm run typeorm -- -d ./src/config/typeorm.config.ts migration:revert",
-    "migration:show": "pnpm run typeorm -- -d ./src/config/typeorm.config.ts migration:show"
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm -- -d ./src/config/data-source.ts migration:generate",
+    "migration:create": "npm run typeorm migration:create",
+    "migration:run": "npm run typeorm migration:run -- -d ./src/config/data-source.ts",
+    "migration:revert": "npm run typeorm migration:revert -- -d ./src/config/data-source.ts ",
+    "migration:show": "npm run typeorm migration:show -- -d ./src/config/data-source.ts"
+
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
