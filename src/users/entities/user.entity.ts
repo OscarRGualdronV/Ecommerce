@@ -11,25 +11,25 @@ export class UserEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string = uuid()
 
-    @Column({length: 50, unique:true})
+    @Column({length: 100, unique:true})
     email: string;
 
-    @Column({length:50})
+    @Column({length:80})
     name: string;
 
-    @Column({length:20})
+    @Column({length:60})
     password: string;
 
-    @Column({type:'text', nullable:true})
+    @Column({length:80})
     address: string;
 
-    @Column({type:'bigint', nullable:true})
-    phone: string;
+    @Column({type: 'bigint'})
+    phone: number;
 
-    @Column({length:50, nullable:true})
+    @Column({length:20, nullable:true})
     country?: string;
 
-    @Column({length:50, nullable:true})
+    @Column({length:20, nullable:true})
     city?: string;
 
     @OneToMany(() => OrderEntity, order => order.user)

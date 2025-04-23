@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, NotFoundException, Put, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, NotFoundException, Put, HttpCode, HttpStatus, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
@@ -22,7 +22,8 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string){
+  async findOne(
+    @Param('id', new ParseUUIDPipe({version: '4'})) id: string){
     const user =  await this.usersService.findOne(id);
     if (!user) {
       return {message: 'Usuario no encontrado'}
