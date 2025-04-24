@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
 
-export class LoginDto {
+export class SignInDto {
     @IsEmail({}, {message: 'El correo electronico debe tener un formato valido'})
     email: string;
 

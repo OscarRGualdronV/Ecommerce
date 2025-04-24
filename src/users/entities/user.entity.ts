@@ -24,7 +24,7 @@ export class UserEntity {
     address: string;
 
     @Column({type: 'bigint'})
-    phone: number;
+    phone: string;
 
     @Column({length:20, nullable:true})
     country?: string;
