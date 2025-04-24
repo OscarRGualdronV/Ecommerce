@@ -1,13 +1,15 @@
-import { BadRequestException, Controller, Param, ParseFilePipeBuilder, ParseUUIDPipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Controller, Param, ParseFilePipeBuilder, ParseUUIDPipe, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { FileInterceptor} from '@nestjs/platform-express'
 import { memoryStorage} from 'multer'
+import { JwtAuthGuard } from 'src/auth/authGuard/auth.guard';
 
 
 @Controller('files')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('uploadImage/:id')
   @UseInterceptors(
     FileInterceptor('file', {storage: memoryStorage()})

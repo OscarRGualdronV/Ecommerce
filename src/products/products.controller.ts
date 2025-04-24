@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { AuthGuard } from 'src/auth/authGuard/auth.guard';
+import { JwtAuthGuard } from 'src/auth/authGuard/auth.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -24,7 +24,6 @@ export class ProductsController {
     return await this.productsService.findOne(id);
   }
 
-  @UseGuards(AuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() productData: CreateProductDto) {
@@ -32,7 +31,7 @@ export class ProductsController {
     return {id: newProduct.id}
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   async update(@Param('id') id: string, @Body() productData: UpdateProductDto) {
@@ -40,7 +39,6 @@ export class ProductsController {
     return {id: updateProduct.id};
   }
 
-  @UseGuards(AuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   async remove(@Param('id') id: string) {

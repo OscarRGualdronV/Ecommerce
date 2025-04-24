@@ -3,13 +3,13 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { AuthGuard } from 'src/auth/authGuard/auth.guard';
+import { JwtAuthGuard } from 'src/auth/authGuard/auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(
     @Query('page') page = '1', 
@@ -20,7 +20,7 @@ export class UsersController {
     
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(
     @Param('id', new ParseUUIDPipe({version: '4'})) id: string){
@@ -39,7 +39,7 @@ export class UsersController {
     return { id: newUser.id};
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   async update(@Param('id') id: string, @Body() userData: UpdateUserDto){
@@ -47,7 +47,7 @@ export class UsersController {
     return {id: updatedUser.id};
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   async remove(@Param('id') id: string){
