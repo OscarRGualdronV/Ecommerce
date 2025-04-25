@@ -29,10 +29,5 @@ export class ProductEntity {
     category: CategoryEntity;
 
     @ManyToMany(() => OrdersDetailEntity, orderDetail => orderDetail.products)
-    @JoinTable({
-        name: 'order_details_products',
-        joinColumn: { name: 'order_detail_id', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'product_id', referencedColumnName: 'id' },
-        })
     orderDetails: OrdersDetailEntity[];
 }

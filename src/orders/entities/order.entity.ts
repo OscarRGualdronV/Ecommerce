@@ -13,8 +13,14 @@ export class OrderEntity {
     @CreateDateColumn()
     date: Date;
 
-    @ManyToOne(() => UserEntity,{onDelete: 'CASCADE',})
-    @JoinColumn({name: 'user_id'})
+    @ManyToOne(() => UserEntity, user => user.orders, {
+        onDelete: 'CASCADE',
+    })
     user: UserEntity;
+
+    @OneToMany(() => OrdersDetailEntity, detail => detail.order, {
+        cascade: true,
+    })
+    orderDetails: OrdersDetailEntity[];
 
 }

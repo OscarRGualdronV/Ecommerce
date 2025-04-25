@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, NotFoundException, Put, HttpCode, HttpStatus, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/authGuard/auth.guard';
 
 @Controller('users')
@@ -30,13 +28,6 @@ export class UsersController {
     }
     const {password, ...rest} = user;
     return rest
-  }
-
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  async create(@Body() userData: CreateUserDto){
-    const newUser = await this.usersService.create(userData);
-    return { id: newUser.id};
   }
 
   @UseGuards(JwtAuthGuard)

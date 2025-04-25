@@ -15,10 +15,12 @@ export class OrdersDetailEntity {
     price: number;
 
 
-    @OneToOne(()=>OrderEntity)
-    @JoinColumn({name: 'order_id'})
+    @ManyToOne(() => OrderEntity, order => order.orderDetails, {
+        onDelete: 'CASCADE',
+    })
     order: OrderEntity;
 
     @ManyToMany(() => ProductEntity, (product) => product.orderDetails)
+    @JoinTable()
     products: ProductEntity[];
 }

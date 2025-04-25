@@ -11,13 +11,13 @@ export class UserEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string = uuid()
 
-    @Column({length: 100, unique:true})
+    @Column({length: 100, unique:true, nullable: true})
     email: string;
 
     @Column({length:80})
     name: string;
 
-    @Column({length:60})
+    @Column({length:60, nullable: true})
     password: string;
 
     @Column({length:80})
@@ -32,6 +32,8 @@ export class UserEntity {
     @Column({length:20, nullable:true})
     city?: string;
 
-    // @OneToMany(() => OrderEntity, order => order.user)
-    // orders: OrderEntity[];
+    @OneToMany(() => OrderEntity, order => order.user, {
+        cascade: true,
+    })
+    orders: OrderEntity[];
 }
