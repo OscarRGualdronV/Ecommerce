@@ -32,6 +32,9 @@ export class UserEntity {
     @Column({length:20, nullable:true})
     city?: string;
 
+    @Column({default: false})
+    isAdmin: boolean;
+
     @OneToMany(() => OrderEntity, order => order.user, {
         cascade: true,
     })

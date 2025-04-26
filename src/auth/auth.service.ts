@@ -65,7 +65,11 @@ async signIn(signInDto: SignInDto){
   }
 
   // 3. Preparar el payload y firma el token
-  const payload = { sub: user.id, email: user.email};
+  const payload = { 
+    sub: user.id, 
+    email: user.email,
+    role: user.isAdmin ? 'admin' : 'user',
+  };
   const accessToken = this.jwtService.sign(payload);
 
   // 4. Devuelve el token y datos publicos del usuario

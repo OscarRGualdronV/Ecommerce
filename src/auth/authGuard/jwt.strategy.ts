@@ -16,9 +16,16 @@ export class JwtStrategy extends PassportStrategy(Strategy){
     }
 
     async validate(payload: any){
-        if (!payload || !payload.sub) {
-            throw new UnauthorizedException('Token inválido');
+
+        console.log('Payload recibido en validate:', payload);
+        
+        if (!payload || !payload.sub || !payload.role) {
+            throw new UnauthorizedException('Token inválido o incompleto');
         }
-        return payload;
+        return {
+            id: payload.sub,
+            email: payload.email,
+            role: payload.role,
+        }
     }
 }
