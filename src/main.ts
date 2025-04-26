@@ -4,10 +4,13 @@ import { GlobalMidleware } from './logger-middleware/logger-middleware.middlewar
 import { ValidationPipe } from '@nestjs/common';
 import { CategoriesSeed } from './seeder/categories/categories.seed';
 import { ProductsSeed } from './seeder/products/product.seed';
+import { auth } from 'express-openid-connect'
+import { config as auth0Config } from './config/auth0.config'
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(auth(auth0Config));
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, // Elimina propiedades que no estan en el DTO
     forbidNonWhitelisted: true, // Lanza error si se envia algo que no esta en el DTO
