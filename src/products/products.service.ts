@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductsRepository } from './products.repository';
 import { ProductEntity } from './entities/product.entity';
@@ -21,7 +21,13 @@ async findAll(page?: number, limit?: number){
 }
 
 async findOne(id: string): Promise<ProductEntity>{
-  return await this.productOrmRepository.findOne({where: {id}})
+  const product = await this.productOrmRepository.findOne({where: {id}});
+
+  if (!product) {
+    throw new NotFoundException(`Producto con id ${id} no encontrado`);
+  }
+
+  return product;
 }
 
 async create(createProductDto: CreateProductDto):Promise<ProductEntity>{
@@ -30,12 +36,13 @@ async create(createProductDto: CreateProductDto):Promise<ProductEntity>{
   const productExist = await this.productOrmRepository.findOne({where: {name}});
 
   if (productExist) {
-    throw new Error(`El producto con el nombre ${name} ya existe`);
+    throw new BadRequestException(`El producto con el nombre ${name} ya existe`);
   }
 
   const category = await this.categoryRepository.findOne({where: {id: categoryId}});
+
   if (!category) {
-    throw new Error('La categoria especificada no existe')
+    throw new NotFoundException('La categoria especificada no existe')
   }
 
   const product = this.productOrmRepository.create({

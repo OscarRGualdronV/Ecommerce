@@ -3,17 +3,45 @@ import { UploadService } from './upload.service';
 import { FileInterceptor} from '@nestjs/platform-express'
 import { memoryStorage} from 'multer'
 import { JwtAuthGuard } from '../auth/authGuard/auth.guard';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 
+@ApiTags('Subida de archivos')
 @Controller('files')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Post('uploadImage/:id')
   @UseInterceptors(
     FileInterceptor('file', {storage: memoryStorage()})
   )
+  @ApiOperation({ summary: 'Sube una imagen para un recurso específico' })
+  @ApiParam({
+    name: 'id',
+    description: 'UUID del recurso relacionado con la imagen',
+    example: 'a5f3c6a3-6f1d-4e2a-a8e0-9a51c4320fa3',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Imagen en formato JPG, PNG o AVIF (máximo 200 KB)',
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 201, description: 'Imagen subida exitosamente' })
+  @ApiResponse({
+    status: 400,
+    description: 'El archivo debe ser JPG/PNG y no exceder 200 KB',
+  })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
   async uploadImage(
     @Param('id', new ParseUUIDPipe()) id: string,
     @UploadedFile(

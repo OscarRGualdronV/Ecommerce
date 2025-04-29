@@ -6,6 +6,7 @@ import { CategoriesSeed } from './seeder/categories/categories.seed';
 import { ProductsSeed } from './seeder/products/product.seed';
 import { auth } from 'express-openid-connect'
 import { config as auth0Config } from './config/auth0.config'
+import { setupSwagger } from './config/swagger.config';
 
 
 async function bootstrap() {
@@ -24,9 +25,10 @@ async function bootstrap() {
   const productsSeed = app.get(ProductsSeed);
   await productsSeed.seed();
   console.log('La inserción de Productos ha terminado');
+
+  setupSwagger(app);
   
   await app.listen(3000);
-  
   
 }
 bootstrap();

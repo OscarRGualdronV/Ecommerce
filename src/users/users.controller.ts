@@ -5,7 +5,10 @@ import { JwtAuthGuard } from '../auth/authGuard/auth.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { Role } from '../common/roles.enum';
 import { RolesGuard } from '../common/guards/roles.guard';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -13,6 +16,10 @@ export class UsersController {
   @Get()
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({summary: 'Obtener todos los usuarios (solo admin)'})
+  @ApiQuery({name: 'page', required: false, type: String, example: '1'})
+  @ApiQuery({ name: 'limit', required: false, type: String, example: '5' })
+  @ApiResponse({ status: 200, description: 'Lista de usuarios paginada.' })
   async findAll(
     @Query('page') page = '1', 
     @Query('limit') limit = '5' ){
@@ -26,6 +33,10 @@ export class UsersController {
   @Get(':id')
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiOperation({ summary: 'Buscar un usuario por ID (solo admin)' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del usuario (UUID)' })
+  @ApiResponse({ status: 200, description: 'Datos del usuario sin la contraseña.' })
+  @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
   async findOne(
     @Param('id', new ParseUUIDPipe({version: '4'})) id: string){
     const user =  await this.usersService.findOne(id);
@@ -39,7 +50,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  async update(@Param('id') id: string, @Body() userData: UpdateUserDto){
+  @ApiOperation({ summary: 'Actualizar un usuario por ID (requiere login)' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del usuario (UUID)' })
+  @ApiResponse({ status: 200, description: 'Usuario actualizado exitosamente.' })
+  async update(@Param('id', new ParseUUIDPipe()) id: string, @Body() userData: UpdateUserDto){
     const updatedUser = await this.usersService.update(id, userData);
     return {id: updatedUser.id};
   }
@@ -47,7 +61,10 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async remove(@Param('id') id: string){
+  @ApiOperation({ summary: 'Eliminar un usuario por ID (requiere login)' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del usuario (UUID)' })
+  @ApiResponse({ status: 200, description: 'Usuario eliminado correctamente.' })
+  async remove(@Param('id', new ParseUUIDPipe()) id: string){
     const result = await this.usersService.remove(id);
     return result;
   }
