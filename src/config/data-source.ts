@@ -1,5 +1,4 @@
 import { registerAs } from '@nestjs/config';
-import { subscribe } from 'diagnostics_channel';
 import * as dotenv from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
 

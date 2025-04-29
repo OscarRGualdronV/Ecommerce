@@ -2,7 +2,7 @@ import { BadRequestException, Controller, Param, ParseFilePipeBuilder, ParseUUID
 import { UploadService } from './upload.service';
 import { FileInterceptor} from '@nestjs/platform-express'
 import { memoryStorage} from 'multer'
-import { JwtAuthGuard } from 'src/auth/authGuard/auth.guard';
+import { JwtAuthGuard } from '../auth/authGuard/auth.guard';
 
 
 @Controller('files')

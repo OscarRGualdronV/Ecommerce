@@ -1,5 +1,5 @@
 
-import { OrderEntity } from 'src/orders/entities/order.entity';
+import { OrderEntity } from '../../orders/entities/order.entity';
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import { v4 as uuid } from 'uuid';
 

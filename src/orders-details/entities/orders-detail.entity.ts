@@ -1,6 +1,6 @@
-import { OrderEntity } from "src/orders/entities/order.entity";
-import { ProductEntity } from "src/products/entities/product.entity";
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne, ManyToMany, JoinTable, JoinColumn, ManyToOne } from "typeorm";
+import { OrderEntity } from "../../orders/entities/order.entity";
+import { ProductEntity } from "../../products/entities/product.entity";
+import { Column, Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 

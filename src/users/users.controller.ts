@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, NotFoundException, Put, HttpCode, HttpStatus, UseGuards, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Body, Param, Delete, Query, Put, HttpCode, HttpStatus, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from 'src/auth/authGuard/auth.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from 'src/common/roles.enum';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/authGuard/auth.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { Role } from '../common/roles.enum';
+import { RolesGuard } from '../common/guards/roles.guard';
 
 @Controller('users')
 export class UsersController {
@@ -22,8 +22,10 @@ export class UsersController {
     
   }
 
-  @UseGuards(JwtAuthGuard)
+  
   @Get(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async findOne(
     @Param('id', new ParseUUIDPipe({version: '4'})) id: string){
     const user =  await this.usersService.findOne(id);

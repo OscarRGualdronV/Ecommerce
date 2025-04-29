@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { JwtAuthGuard } from 'src/auth/authGuard/auth.guard';
+import { JwtAuthGuard } from '../auth/authGuard/auth.guard';
+import { Role } from '../common/roles.enum';
+import { Roles } from '../common/decorators/roles.decorator';
 
 @Controller('products')
 export class ProductsController {
@@ -31,8 +33,9 @@ export class ProductsController {
     return {id: newProduct.id}
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async update(@Param('id') id: string, @Body() productData: UpdateProductDto) {
     const updateProduct = await this.productsService.update(id, productData);

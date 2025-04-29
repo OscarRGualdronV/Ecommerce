@@ -3,9 +3,9 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity } from './entities/order.entity';
 import { Repository, In } from 'typeorm';
-import { OrdersDetailEntity } from 'src/orders-details/entities/orders-detail.entity';
-import { ProductEntity } from 'src/products/entities/product.entity';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { OrdersDetailEntity } from '../orders-details/entities/orders-detail.entity';
+import { ProductEntity } from '../products/entities/product.entity';
+import { UserEntity } from '../users/entities/user.entity';
 
 
 @Injectable()
