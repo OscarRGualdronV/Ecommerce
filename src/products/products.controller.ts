@@ -52,7 +52,8 @@ export class ProductsController {
 
   @Patch(':id')
   @Roles(Role.ADMIN)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Actualizar un producto (solo admin)' })
   @ApiParam({ name: 'id', type: 'string', description: 'ID del producto (UUID)' })
