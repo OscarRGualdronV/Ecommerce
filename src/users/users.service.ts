@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
@@ -69,6 +69,17 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<UserEntity>{
     return this.userOrmRepository.findOne({where: { email }});
+  }
+
+  async promoteToAdmin(email: string): Promise<string>{
+    const user = await this.userOrmRepository.findOne({where: {email}});
+    if (!user) throw new NotFoundException('Usuario no encontrado');
+    if(user.isAdmin) throw new BadRequestException('Este usuario ya es admin');
+
+    user.isAdmin = true;
+    await this.userOrmRepository.save(user);
+
+    return `El usuario con email ${email} ahora es administrador.`;
   }
 
 }

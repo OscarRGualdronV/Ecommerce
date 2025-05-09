@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Param, Delete, Query, Put, HttpCode, HttpStatus, UseGuards, ParseUUIDPipe } from '@nestjs/common';
+import { Headers, Controller, Get, Body, Param, Delete, Query, Put, HttpCode, HttpStatus, UseGuards, ParseUUIDPipe, Post, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/authGuard/auth.guard';
@@ -67,6 +67,20 @@ export class UsersController {
   async remove(@Param('id', new ParseUUIDPipe()) id: string){
     const result = await this.usersService.remove(id);
     return result;
+  }
+
+  @Post('/promote')
+  async promoteToAdmin(
+    @Headers('x-secret-key') secretKey: string,
+    @Body('email') email: string,
+  ){
+    const SECRET = process.env.ADMIN_PROMOTE_SECRET 
+
+    if (secretKey !== SECRET) {
+      throw new UnauthorizedException('Clave secreta inválida')
+    }
+
+    return await this.usersService.promoteToAdmin(email);
   }
 
 }
