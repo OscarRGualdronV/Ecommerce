@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '../auth/authGuard/auth.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { Role } from '../common/roles.enum';
 import { RolesGuard } from '../common/guards/roles.guard';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -70,6 +70,18 @@ export class UsersController {
   }
 
   @Post('/promote')
+  @ApiOperation({summary: 'Promueve un usuario al rol admin'})
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', example: 'admin@example.com'},
+        secret: { type: 'string', example: 'supersecreto'}
+      },
+    },
+  })
+  @ApiResponse({ status: 200, description: 'Usuario promovido correctamente' })
+  @ApiResponse({status: 401, description: 'Acceso no autorizado'})
   async promoteToAdmin(
     @Headers('x-secret-key') secretKey: string,
     @Body('email') email: string,
