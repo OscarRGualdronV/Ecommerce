@@ -4,6 +4,9 @@ import { FileInterceptor} from '@nestjs/platform-express'
 import { memoryStorage} from 'multer'
 import { JwtAuthGuard } from '../auth/authGuard/auth.guard';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { Role } from 'src/common/roles.enum';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 
 
 @ApiTags('Subida de archivos')
@@ -12,12 +15,13 @@ export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('uploadImage/:id')
   @UseInterceptors(
     FileInterceptor('file', {storage: memoryStorage()})
   )
-  @ApiOperation({ summary: 'Sube una imagen para un recurso específico' })
+  @ApiOperation({ summary: 'Sube una imagen para un recurso específico (solo admin)' })
   @ApiParam({
     name: 'id',
     description: 'UUID del recurso relacionado con la imagen',
