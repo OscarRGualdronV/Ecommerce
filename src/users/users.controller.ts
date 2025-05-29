@@ -69,14 +69,16 @@ export class UsersController {
     return result;
   }
 
+  
   @Post('/promote')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiOperation({summary: 'Promueve un usuario al rol admin'})
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
-        email: { type: 'string', example: 'admin@example.com'},
-        secret: { type: 'string', example: 'supersecreto'}
+        email: { type: 'string', example: 'admin@example.com'}
       },
     },
   })
